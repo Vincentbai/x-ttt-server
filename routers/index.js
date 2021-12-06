@@ -19,11 +19,11 @@ router.get('/totalCount', async (req, res) => {
 
     res.send({status: 200, data: count})
     
-  } catch (error) {
+  } catch (err) {
     
     res.send({status: 500})
 
-    console.log(error)
+    console.log(err)
   }
 })
 
@@ -40,10 +40,9 @@ router.post('/addOrUpdateRecord', async (req, res) => {
     const existingUser = await RankRecordModel.findOne(data)
 
     if(!existingUser){
-      console.log(data)
+      
       const newRecord = await RankRecordModel.create([data])
 
-      console.log(newRecord)
     }else{
       await RankRecordModel.findOneAndUpdate(data, {$inc:{login_count: 1}})
     }
@@ -79,8 +78,6 @@ router.post('/updateWinCount', async (req, res) => {
 router.get('/getAllRecords', async (req, res) => {
 
   try {
-
-    const data = req.body
 
     const recods = await RankRecordModel.find().sort({'win_count':-1, 'login_count':-1})
 
